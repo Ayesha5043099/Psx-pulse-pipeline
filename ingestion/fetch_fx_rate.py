@@ -6,7 +6,7 @@ import os
 API_URL = "https://open.er-api.com/v6/latest/USD"
 
 def fetch_fx_rate():
-    """USD base rate se PKR exchange rate fetch karta hai"""
+    """Fetches the PKR exchange rate based on USD"""
     try:
         response = requests.get(API_URL, timeout=10)
         response.raise_for_status()
@@ -22,17 +22,17 @@ def fetch_fx_rate():
             "fetched_at": datetime.now().isoformat()
         }
         
-        print(f" Current rate: 1 USD = {pkr_rate} PKR")
+        print(f"Current rate: 1 USD = {pkr_rate} PKR")
         return result
         
     except Exception as e:
-        print(f" FX rate fetch karte waqt error: {e}")
+        print(f" Error fetching FX rate: {e}")
         return None
 
 def save_to_file(data):
-    """Data ko JSON file mein save karta hai"""
+    """Saves data to a JSON file"""
     if data is None:
-        print(" Koi data nahi mila, file save nahi hogi")
+        print(" No data found, file not saved")
         return
     
     os.makedirs("../data/raw", exist_ok=True)
@@ -41,9 +41,9 @@ def save_to_file(data):
     with open(filename, "w") as f:
         json.dump(data, f, indent=2)
     
-    print(f"📁 Data save ho gaya: {filename}")
+    print(f" Data saved to: {filename}")
 
 if __name__ == "__main__":
-    print("🚀 PKR/USD exchange rate fetch ho raha hai...\n")
+    print(" Fetching PKR/USD exchange rate...\n")
     fx_data = fetch_fx_rate()
     save_to_file(fx_data)
