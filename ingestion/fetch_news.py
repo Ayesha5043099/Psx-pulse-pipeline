@@ -1,59 +1,49 @@
 import feedparser
 import json
 from datetime import datetime
-import os
+from kafka import KafkaProducer
 
-# Pakistani financial news RSS feeds
 RSS_FEEDS = {
     "Dawn_Business": "https://www.dawn.com/feeds/business",
 }
 
-def fetch_news():
-    """Fetches financial news headlines from RSS feeds"""
-    all_articles = []
-    
+producer = KafkaProducer(
+    bootstrap_servers="localhost:9093",
+    value_serializer=lambda v: json.dumps(v).encode("utf-8")
+)
+
+def fetch_and_publish():
+    """Fetches news headlines and publishes them to the Kafka topic"""
+    total_published = 0
+
     for source_name, feed_url in RSS_FEEDS.items():
         try:
             feed = feedparser.parse(feed_url)
-            
+
             if feed.bozo and not feed.entries:
                 print(f" {source_name}: could not parse feed")
                 continue
-            
-            for entry in feed.entries[:15]:  # Only latest 15 articles
+
+            for entry in feed.entries[:15]:
                 article = {
                     "source": source_name,
                     "title": entry.get("title", ""),
                     "link": entry.get("link", ""),
                     "published": entry.get("published", ""),
-                    "summary": entry.get("summary", "")[:300],  # Keep summary short
+                    "summary": entry.get("summary", "")[:300],
                     "fetched_at": datetime.now().isoformat()
                 }
-                all_articles.append(article)
-            
-            print(f" {source_name}: {len(feed.entries[:15])} articles fetched")
-            
-        except Exception as e:
-            print(f" Error fetching {source_name}: {e}")
-    
-    return all_articles
+                producer.send("news_articles", value=article)
+                total_published += 1
 
-def save_to_file(data):
-    """Saves data to a JSON file"""
-    if not data:
-        print(" No data found, file not saved")
-        return
-    
-    os.makedirs("../data/raw", exist_ok=True)
-    filename = f"../data/raw/news_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    
-    with open(filename, "w") as f:
-        json.dump(data, f, indent=2)
-    
-    print(f" Data saved to: {filename}")
+            print(f" {source_name}: {len(feed.entries[:15])} articles published")
+
+        except Exception as e:
+            print(f" Error fetching/publishing {source_name}: {e}")
+
+    producer.flush()
+    print(f"\n Total {total_published} articles flushed to Kafka")
 
 if __name__ == "__main__":
-    print(" Fetching financial news...\n")
-    news_data = fetch_news()
-    save_to_file(news_data)
-    print(f"\n Total {len(news_data)} articles collected")
+    print(" Starting news fetch and publish...\n")
+    fetch_and_publish()
