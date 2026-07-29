@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 from datetime import datetime
@@ -5,8 +6,10 @@ from kafka import KafkaProducer
 
 API_URL = "https://open.er-api.com/v6/latest/USD"
 
+KAFKA_SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9093")
+
 producer = KafkaProducer(
-    bootstrap_servers="localhost:9093",
+    bootstrap_servers=KAFKA_SERVER,
     value_serializer=lambda v: json.dumps(v).encode("utf-8")
 )
 
@@ -30,11 +33,11 @@ def fetch_and_publish():
         producer.send("fx_rates", value=result)
         producer.flush()
 
-        print(f" Published: 1 USD = {pkr_rate} PKR")
+        print(f"✅ Published: 1 USD = {pkr_rate} PKR")
 
     except Exception as e:
-        print(f" Error fetching/publishing FX rate: {e}")
+        print(f"❌ Error fetching/publishing FX rate: {e}")
 
 if __name__ == "__main__":
-    print(" Starting FX rate fetch and publish...\n")
+    print(f"🚀 Starting FX rate fetch and publish... (Kafka: {KAFKA_SERVER})\n")
     fetch_and_publish()

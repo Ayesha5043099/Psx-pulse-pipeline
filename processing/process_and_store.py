@@ -7,14 +7,16 @@ from kafka import KafkaConsumer
 from minio import Minio
 from dotenv import load_dotenv
 
-# Load environment variables from configs/.env
+# Load environment variables from configs/.env (used only for local runs;
+# Docker/Airflow sets these directly as container environment variables,
+# which take priority since load_dotenv() does not override existing vars)
 load_dotenv(dotenv_path="../configs/.env")
 
-MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT")
-MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
-MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
-MINIO_BUCKET = os.getenv("MINIO_BUCKET")
-KAFKA_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "localhost:9002")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "minioadmin")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "minioadmin123")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET", "psx-data-lake")
+KAFKA_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9093")
 
 TOPICS = ["psx_prices", "fx_rates", "news_articles"]
 
