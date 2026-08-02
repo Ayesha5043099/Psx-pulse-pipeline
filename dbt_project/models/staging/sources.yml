@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: psx_pulse_db
+    schema: raw_data
+    tables:
+      - name: psx_prices
+      - name: fx_rates
+      - name: news_articles
