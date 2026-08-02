@@ -1,9 +1,9 @@
 
-# PSX Pulse — Real-Time Pakistan Stock Exchange Intelligence Pipeline
+# PSX Pulse  Real-Time Pakistan Stock Exchange Intelligence Pipeline
 
 An end-to-end data engineering pipeline that ingests real-time Pakistan Stock Exchange (PSX) prices, PKR/USD exchange rates, and financial news, then processes, stores, transforms, and orchestrates the data through a modern, production-style stack.
 
-Unlike common portfolio projects built on NYC taxi or generic Kaggle datasets, this pipeline is built around real, local Pakistani financial data — combining market prices, currency movement, and news sentiment into a single analytics-ready table.
+Unlike common portfolio projects built on NYC taxi or generic Kaggle datasets, this pipeline is built around real, local Pakistani financial data  combining market prices, currency movement, and news sentiment into a single analytics-ready table.
 
 ---
 
@@ -113,19 +113,7 @@ dbt run
 dbt test
 ```
 
----
 
-## Roadmap
 
-- [x] Real-time ingestion (PSX, FX, news)
-- [x] Kafka streaming
-- [x] Processing + sentiment scoring
-- [x] Data lake (MinIO)
-- [x] Warehouse (Snowflake)
-- [x] dbt transformation + testing
-- [x] Airflow orchestration
-- [ ] BI dashboard (Power BI / Superset)
-- [ ] Simple ML-based price direction prediction
 
----
 
