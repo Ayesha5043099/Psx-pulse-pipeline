@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stock_sentiment_summary
+    description: "Final analysis-ready table combining stock prices, FX rate, and market sentiment"
+    columns:
+      - name: symbol
+        description: "Stock ticker symbol"
+        tests:
+          - not_null
+          - unique
+      - name: price
+        description: "Current stock price"
+        tests:
+          - not_null
+      - name: pkr_per_usd
+        description: "Latest PKR/USD exchange rate"
+        tests:
+          - not_null

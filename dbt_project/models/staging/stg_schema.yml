@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_psx_prices
+    description: "Cleaned PSX stock price data"
+    columns:
+      - name: symbol
+        description: "Stock ticker symbol"
+        tests:
+          - not_null
+          - unique
+      - name: price
+        description: "Current stock price"
+        tests:
+          - not_null
+
+  - name: stg_fx_rates
+    description: "Cleaned PKR/USD exchange rate data"
+    columns:
+      - name: pkr_per_usd
+        description: "PKR value per 1 USD"
+        tests:
+          - not_null
+
+  - name: stg_news_articles
+    description: "Cleaned financial news articles with sentiment scores"
+    columns:
+      - name: title
+        description: "News article headline"
+        tests:
+          - not_null
+      - name: sentiment_score
+        description: "Sentiment score between -1 and 1"
+        tests:
+          - not_null
