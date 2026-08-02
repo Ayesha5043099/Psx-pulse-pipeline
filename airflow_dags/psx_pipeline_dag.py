@@ -11,9 +11,9 @@ default_args = {
 with DAG(
     dag_id="psx_pulse_pipeline",
     default_args=default_args,
-    description="Fetch PSX stocks, FX rate, and news, then process into MinIO",
+    description="Fetch PSX stocks, FX rate, and news, process into MinIO, then load into Snowflake",
     start_date=datetime(2026, 7, 27),
-    schedule_interval="@daily",   # Runs once a day; change to "*/30 * * * *" for every 30 min
+    schedule_interval="@daily",
     catchup=False,
     tags=["psx-pulse"],
 ) as dag:
@@ -38,5 +38,10 @@ with DAG(
         bash_command="cd /opt/airflow/processing && python3 process_and_store.py"
     )
 
-    # Task dependency: run all three fetchers in parallel, then process
-    [fetch_psx, fetch_fx, fetch_news] >> process_data
+    load_to_warehouse = BashOperator(
+        task_id="load_to_snowflake",
+        bash_command="cd /opt/airflow/processing && python3 load_to_snowflake.py"
+    )
+
+    # Fetch tasks run in parallel, then process, then load into Snowflake
+    [fetch_psx, fetch_fx, fetch_news] >> process_data >> load_to_warehouse

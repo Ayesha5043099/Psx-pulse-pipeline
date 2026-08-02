@@ -79,6 +79,13 @@ services:
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin123"
       MINIO_BUCKET: "psx-data-lake"
+      SNOWFLAKE_ACCOUNT: "smjeeps-gf06320"
+      SNOWFLAKE_USER: "apna_snowflake_username"
+      SNOWFLAKE_PASSWORD: "apna_snowflake_password"
+      SNOWFLAKE_WAREHOUSE: "compute_wh"
+      SNOWFLAKE_DATABASE: "psx_pulse_db"
+      SNOWFLAKE_SCHEMA: "raw_data"
+      SNOWFLAKE_ROLE: "accountadmin"
     volumes:
       - ../airflow_dags:/opt/airflow/dags
       - ../ingestion:/opt/airflow/ingestion
@@ -106,6 +113,13 @@ services:
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin123"
       MINIO_BUCKET: "psx-data-lake"
+      SNOWFLAKE_ACCOUNT: "smjeeps-gf06320"
+      SNOWFLAKE_USER: "apna_snowflake_username"
+      SNOWFLAKE_PASSWORD: "apna_snowflake_password"
+      SNOWFLAKE_WAREHOUSE: "compute_wh"
+      SNOWFLAKE_DATABASE: "psx_pulse_db"
+      SNOWFLAKE_SCHEMA: "raw_data"
+      SNOWFLAKE_ROLE: "accountadmin"
     ports:
       - "8084:8080"
     volumes:
@@ -132,6 +146,13 @@ services:
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin123"
       MINIO_BUCKET: "psx-data-lake"
+      SNOWFLAKE_ACCOUNT: "smjeeps-gf06320"
+      SNOWFLAKE_USER: "Ayesha"
+      SNOWFLAKE_PASSWORD: "Ayesha@1234567"
+      SNOWFLAKE_WAREHOUSE: "compute_wh"
+      SNOWFLAKE_DATABASE: "psx_pulse_db"
+      SNOWFLAKE_SCHEMA: "raw_data"
+      SNOWFLAKE_ROLE: "accountadmin"
     volumes:
       - ../airflow_dags:/opt/airflow/dags
       - ../ingestion:/opt/airflow/ingestion

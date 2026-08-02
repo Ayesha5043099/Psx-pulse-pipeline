@@ -7,4 +7,6 @@ RUN pip install --no-cache-dir \
     python-dotenv \
     feedparser \
     requests \
-    pandas
+    pandas \
+    snowflake-connector-python \
+    pyarrow
