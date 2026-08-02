@@ -7,3 +7,8 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 .DS_Store
+logs/
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/dbt_packages/
+dbt_project/logs/
