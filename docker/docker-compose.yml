@@ -160,6 +160,57 @@ services:
       - ../configs:/opt/airflow/configs
     command: scheduler
 
+  superset-db:
+    image: postgres:15
+    container_name: psx_superset_db
+    environment:
+      POSTGRES_USER: superset
+      POSTGRES_PASSWORD: superset
+      POSTGRES_DB: superset
+    volumes:
+      - superset_db_data:/var/lib/postgresql/data
+
+  superset-init:
+    build:
+      context: ./superset
+      dockerfile: Dockerfile
+    container_name: psx_superset_init
+    depends_on:
+      - superset-db
+    environment:
+      SUPERSET_SECRET_KEY: "psx_pulse_superset_secret"
+      DATABASE_DIALECT: postgresql
+      DATABASE_HOST: superset-db
+      DATABASE_PORT: 5432
+      DATABASE_DB: superset
+      DATABASE_USER: superset
+      DATABASE_PASSWORD: superset
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - "superset db upgrade && superset fab create-admin --username admin --firstname Ayesha --lastname Data --email admin@example.com --password admin && superset init"
+
+  superset:
+    build:
+      context: ./superset
+      dockerfile: Dockerfile
+    container_name: psx_superset
+    depends_on:
+      superset-init:
+        condition: service_completed_successfully
+    environment:
+      SUPERSET_SECRET_KEY: "psx_pulse_superset_secret"
+      DATABASE_DIALECT: postgresql
+      DATABASE_HOST: superset-db
+      DATABASE_PORT: 5432
+      DATABASE_DB: superset
+      DATABASE_USER: superset
+      DATABASE_PASSWORD: superset
+    ports:
+      - "8088:8088"
+    command: ["/usr/bin/run-server.sh"]
+
 volumes:
   minio_data:
   airflow_db_data:
+  superset_db_data:
