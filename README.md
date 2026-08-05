@@ -6,35 +6,6 @@ Unlike common portfolio projects built on NYC taxi or generic Kaggle datasets, t
 
 ---
 
-## Architecture
-
-Data Sources (PSX stocks, PKR/USD rate, Dawn Business news)
-│
-▼
-Kafka Producers (Python)
-│
-▼
-Apache Kafka (streaming broker)
-│
-▼
-Processing Layer (Kafka Consumer + sentiment scoring)
-│
-▼
-MinIO (S3-compatible data lake, Parquet format)
-│
-▼
-Snowflake (cloud data warehouse)
-│
-▼
-dbt (staging models → tested mart model)
-│
-▼
-Apache Airflow (orchestrates the entire pipeline daily)
-│
-▼
-Apache Superset (interactive BI dashboard)
----
-
 ## Tech Stack
 
 | Layer            | Tool                                          |
